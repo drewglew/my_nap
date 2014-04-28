@@ -1,0 +1,7 @@
+[% META title = 'Import Clothes' %]
+
+<form action="/wardrobe/upload" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="form_submit" value ="yes">
+	<input type="file" name="clothes_csv">
+	<input type="submit" value="Import">
+</form>

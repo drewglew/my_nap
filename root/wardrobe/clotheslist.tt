@@ -1,0 +1,45 @@
+[% # This is a TT comment. -%]
+ 
+[%- # Provide a title -%]
+[% META title = 'Clothes Listing' -%]
+    <div class="searchbox">
+    <label>Search for clothing items:</label>
+    <form name='searchclothes' action='[% c.uri_for("/wardrobe/clotheslist") %]' method="post">
+      <input type="text" name="query" value="[% query %]">
+      <input type="submit" value="Search">
+    </form>
+    </div>
+ 
+[% SET counter = 0 %]
+[% FOREACH clothesitem IN clothes -%]
+	[% counter = counter + 1 %] 
+	[% IF counter mod 3 == 1 %]
+   <div class="grid grid-pad">
+	[% END %]	
+    <div class="col-1-3">
+       <div class="content">
+             <br/>
+             <div class="clothes">[% clothesitem.name %]</div>
+	     <a href='[% c.uri_for("/wardrobe/deleteclothesitem/${clothesitem.id}") | html %]'>delete</a><br/><br/>	
+	     <div class="category">Category:</div>
+		<a href='[% c.uri_for("/wardrobe/categorylist/${clothesitem.category}") | html %]'>[% clothesitem.category %]</a>
+             	[%- SET outfitcollection = clothesitem.clothesoutfits %]
+     		[%- FOREACH outfititem = outfitcollection %]
+           	[%- SET outfitrec = outfititem.outfit %]
+           	[%- IF loop.first() %]<div class="outfit">([% loop.size() %]) Outfits:</div>[% END %]
+	   	<a href='[% c.uri_for("/wardrobe/manageoutfit/$outfitrec.id") | html %]'>[% outfitrec.tag_name %]</a>
+		[%- END %]	
+       </div>
+    </div>
+    	[% IF counter mod 3 == 0 && counter != 1 %]
+  </div>
+	[% END %]
+[% END %]
+
+[% IF counter mod 3 != 0 || counter == 1 %]
+  </div>
+[% END %]
+<br/>
+<p>Total clothes included in wardrobe selection: [% counter %]</p>
+<br/>
+<br/>

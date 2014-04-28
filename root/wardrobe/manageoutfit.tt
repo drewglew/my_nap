@@ -1,0 +1,69 @@
+[% META title = 'Manage Clothes in Outfit' -%]
+[% # Included List %]
+[% # Get Outfit Name %]
+
+[% #obtain the name from elsewhere! %]
+
+<h2>Items included in [% outfitdetail.tag_name %]</h2>
+
+[% SET counter = 0 %]
+[% FOREACH tagitem = included -%]
+	[% counter = counter + 1 %] 
+	[% IF counter mod 3 == 1 %]
+   <div class="grid grid-pad">
+	[% END %]
+    	[% SET clothing = tagitem.clothe %]
+  	[% FOREACH item IN clothing -%]
+    <div class="col-1-3">
+       <div class="content">
+             <br/>
+             <div class="clothes">[% item.name %]</div>
+	     <div class="category">Category:</div>	
+	     <a href='[% c.uri_for("/wardrobe/categorylist/${item.category}") | html %]'>[% item.category %]</a>
+             <div class="outfit"></div>
+	     <a href='[% c.uri_for("/wardrobe/removeclothingfromoutfit/${item.id}/$outfitdetail.id") | html %]'>Remove</a>
+       </div>
+    </div>
+	[% END %]
+    	[% IF counter mod 3 == 0 && counter != 1 %]
+  </div>
+	[% END %]
+[% END %]
+
+[% IF counter mod 3 != 0 || counter == 1 %]
+  </div>
+[% END %]
+<br/>
+<p>Total clothes included in outfit: [% counter %]</p>
+<br/>
+<br/>
+<br/>
+[% # Excluded List %]
+<h2>Items Excluded from [% outfitdetail.tag_name %]</h2>
+<br/>
+[% counter = 0 %]
+[% FOREACH clothesitem IN excluded -%]
+	[% counter = counter + 1 %] 
+	[% IF counter mod 3 == 1 %]
+   <div class="grid grid-pad">
+	[% END %]
+    <div class="col-1-3">
+       <div class="content">
+        <br/>
+     	<div class="clothes">[% clothesitem.name %]</div>
+        <div class="category">Category:</div>
+	<a href='[% c.uri_for("/wardrobe/categorylist/${clothesitem.category}") | html %]'>[% clothesitem.category %]</a>
+        <div class="outfit"></div>
+	<a href='[% c.uri_for("/wardrobe/addclothingtooutfit/${clothesitem.id}/$outfitdetail.id") | html %]'>Add</a></p><br/>
+       </div>
+    </div>
+    	[% IF counter mod 3 == 0 && counter !=1 %]
+  </div>
+	[% END %]
+[% END %]
+
+[% IF counter mod 3 != 0 || counter == 1 %]
+  </div>
+[% END %]
+<br/>
+<p>Total clothes excluded from outfit: [% counter %]</p>
